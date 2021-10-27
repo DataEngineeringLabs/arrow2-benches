@@ -1,0 +1,21 @@
+[package]
+name = "arrow2-benches"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+arrow2 = {version = "0.6", features = ["compute", "io_csv", "simd", "io_avro"] }
+mz-avro = "0.6"
+avro-rs = { version = "0.13", default_features = false }
+
+[dev-dependencies]
+criterion = "0.3"
+rand = "0.8"
+
+[[bench]]
+name = "sum"
+harness = false
+
+[[bench]]
+name = "avro_read"
+harness = false
