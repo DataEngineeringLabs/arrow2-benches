@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-arrow2 = {version = "0.6", features = ["compute", "io_csv", "simd", "io_avro"] }
+#arrow2 = {version = "0.7", features = ["io_csv", "io_avro"] }
+arrow2 = {git = "https://github.com/jorgecarleitao/arrow2", branch = "main", features = ["io_csv", "io_avro"] }
 mz-avro = "0.6"
 avro-rs = { version = "0.13", default_features = false }
 

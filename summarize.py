@@ -119,6 +119,7 @@ result = (
     _read_reports("arrow_avro_read")
     + _read_reports("avro_read")
     + _read_reports("mz_avro_read")
+    + _read_reports("fastavro")
 )
 for r in result:
     r["type"] = r["type"] + " " + r["task"]
@@ -129,6 +130,7 @@ plot(
         ("utf8 arrow_avro_read", "arrow2"),
         ("utf8 mz_avro_read", "mz-avro"),
         ("utf8 avro_read", "avro"),
+        ("utf8 fastavro", "fastavro (Python)"),
     ],
     "Read N rows of a single string of 3 bytes each",
     "avro_read.png",
