@@ -132,7 +132,31 @@ plot(
         ("utf8 avro_read", "avro"),
         ("utf8 fastavro", "fastavro (Python)"),
     ],
-    "Read N rows of a single string of 3 bytes each",
+    "Read N rows of a single string column of 3 bytes each",
     "avro_read.png",
+    True,
+)
+
+plot(
+    result,
+    [
+        ("int arrow_avro_read", "arrow2"),
+        ("int mz_avro_read", "mz-avro"),
+        ("int avro_read", "avro"),
+    ],
+    "Read N rows of a single int column",
+    "avro_read_int.png",
+    True,
+)
+
+plot(
+    result,
+    [
+        ("int deflate arrow_avro_read", "arrow2"),
+        ("int deflate mz_avro_read", "mz-avro"),
+        ("int deflate avro_read", "avro"),
+    ],
+    "Read N rows of a single int column",
+    "avro_read_int_compressed.png",
     True,
 )
