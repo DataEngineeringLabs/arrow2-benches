@@ -47,9 +47,12 @@ fn schema(type_: Type) -> AvroSchema {
         "type": "record",
         "name": "test",
         "fields": [
-            {"name": "a", "type": "string"},
-            {"name": "b", "type": "int"},
-            {"name": "c", "type": "boolean"}
+            {"name": "c1", "type": "string"},
+            {"name": "c2", "type": "int"},
+            {"name": "c3", "type": "boolean"},
+            {"name": "c4", "type": "string"},
+            {"name": "c5", "type": "string"},
+            {"name": "c6", "type": ["null", "int"], "default": null}
         ]
     }
 "#
@@ -85,10 +88,18 @@ fn write(size: usize, has_codec: bool, type_: Type) -> Result<Vec<u8>> {
         }
         Type::Mixed => {
             (0..size).for_each(|_| {
+                let random = if rand::thread_rng().gen::<f32>() < 0.5 {
+                    Some(rand::thread_rng().gen_range(0..100))
+                } else {
+                    None
+                };
                 let mut record = Record::new(writer.schema()).unwrap();
-                record.put("a", "foo");
-                record.put("b", 1);
-                record.put("c", true);
+                record.put("c1", "this is a string");
+                record.put("c2", 1);
+                record.put("c3", true);
+                record.put("c4", "foo");
+                record.put("c5", "hello world");
+                record.put("c6", random);
                 writer.append(record).unwrap();
             });
         }

@@ -69,10 +69,13 @@ def _read_reports(bench: str):
 
 def plot(result, choices, title, filename, to_stdout=False):
     x = [2 ** x["size"] for x in result if x["type"] == choices[0][0]]
+    x = sorted(x)
 
     fig, ax = plt.subplots(1, 1, figsize=set_size(512))
     for (choice, name) in choices:
-        values = [r["time"] for r in result if r["type"] == choice]
+        values = [r for r in result if r["type"] == choice]
+        values = sorted(values, key=lambda r: int(r["size"]))
+        values = [r["time"] for r in values]
         ax.plot(x, values, "-o", label=name)
 
         if to_stdout:
@@ -168,7 +171,7 @@ plot(
         ("mixed mz_avro_read", "mz-avro"),
         ("mixed avro_read", "avro"),
     ],
-    "Read N rows of 3 columns (string, bool, int)",
+    "Read N rows of 6 columns (string, bool, int, string, string, string|null)",
     "avro_read_mixed.png",
     True,
 )
