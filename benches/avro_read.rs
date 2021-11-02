@@ -14,6 +14,7 @@ use rand::{distributions::Alphanumeric, Rng};
 enum Type {
     Utf8,
     Int,
+    Mixed,
 }
 
 fn schema(type_: Type) -> AvroSchema {
@@ -36,6 +37,19 @@ fn schema(type_: Type) -> AvroSchema {
         "name": "test",
         "fields": [
             {"name": "a", "type": "int"}
+        ]
+    }
+"#
+        }
+        Type::Mixed => {
+            r#"
+    {
+        "type": "record",
+        "name": "test",
+        "fields": [
+            {"name": "a", "type": "string"},
+            {"name": "b", "type": "int"},
+            {"name": "c", "type": "boolean"}
         ]
     }
 "#
@@ -66,6 +80,15 @@ fn write(size: usize, has_codec: bool, type_: Type) -> Result<Vec<u8>> {
             (0..size).for_each(|_| {
                 let mut record = Record::new(writer.schema()).unwrap();
                 record.put("a", 1);
+                writer.append(record).unwrap();
+            });
+        }
+        Type::Mixed => {
+            (0..size).for_each(|_| {
+                let mut record = Record::new(writer.schema()).unwrap();
+                record.put("a", "foo");
+                record.put("b", 1);
+                record.put("c", true);
                 writer.append(record).unwrap();
             });
         }
@@ -136,7 +159,7 @@ fn add_benchmark(c: &mut Criterion) {
     for (task_name, task) in tasks {
         let mut group = c.benchmark_group(task_name);
 
-        for type_ in [Type::Utf8, Type::Int] {
+        for type_ in [Type::Utf8, Type::Int, Type::Mixed] {
             for compressed in [true, false] {
                 for log2_size in (10..=20).step_by(2) {
                     let size = 2usize.pow(log2_size);

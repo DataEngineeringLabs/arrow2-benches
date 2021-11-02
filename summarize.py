@@ -160,3 +160,15 @@ plot(
     "avro_read_int_compressed.png",
     True,
 )
+
+plot(
+    result,
+    [
+        ("mixed arrow_avro_read", "arrow2"),
+        ("mixed mz_avro_read", "mz-avro"),
+        ("mixed avro_read", "avro"),
+    ],
+    "Read N rows of 3 columns (string, bool, int)",
+    "avro_read_mixed.png",
+    True,
+)

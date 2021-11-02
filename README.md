@@ -8,7 +8,7 @@ python3 -m venv venv
 venv/bin/pip install -U pip
 venv/bin/pip install matplotlib
 
-cargo bench
+cargo bench --bench avro_read
 venv/bin/python summarize.py
 ```
 
