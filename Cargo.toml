@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-#arrow2 = {version = "0.7", features = ["io_avro"] }
-arrow2 = {git = "https://github.com/jorgecarleitao/arrow2", branch = "main", features = ["io_avro"] }
+ahash = "*"
+arrow2 = {version = "0.9", features = ["io_avro", "compute_hash", "compute_aggregate"] }
 mz-avro = "0.6"
 avro-rs = { version = "0.13", default_features = false }
 

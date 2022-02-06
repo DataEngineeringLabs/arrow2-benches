@@ -1,5 +1,4 @@
 use std::io::Cursor;
-use std::sync::Arc;
 
 use arrow2::error::Result;
 use arrow2::io::avro::read;
@@ -8,7 +7,7 @@ use avro_rs::*;
 use avro_rs::{Codec, Schema as AvroSchema};
 use criterion::*;
 use mz_avro::Reader as MzReader;
-use rand::{distributions::Alphanumeric, Rng};
+use rand::Rng;
 
 #[derive(Debug, Copy, Clone)]
 enum Type {
@@ -145,13 +144,13 @@ fn read_batch(buffer: &[u8], size: usize) -> Result<()> {
             codec,
         ),
         avro_schema,
-        Arc::new(schema),
+        schema.fields,
     );
 
     let mut rows = 0;
     for maybe_batch in reader {
         let batch = maybe_batch?;
-        rows += batch.num_rows();
+        rows += batch.len();
     }
     assert_eq!(rows, size);
     Ok(())
